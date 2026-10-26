@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Rezyme.css">
+    <title>📄 Rezyume</title>
+</head>
+<body>
+    
+
+    
+
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ustozim — Rezyume</title>
+
+    <link rel="stylesheet" href="./resume.css">
+</head>
+
+<body>
+
+<div class="resume-page">
+
+    <!-- =========================
+         CHAP TOMON — INPUTLAR
+    ========================== -->
+
+    <aside class="resume-sidebar">
+
+        <div class="sidebar-title">
+            <button onclick="goBack()" class="back-btn">
+                ←
+            </button>
+
+            <div>
+                <h2>Rezyume</h2>
+                <p>Ma'lumotlaringizni kiriting</p>
+            </div>
+        </div>
+
+
+        <!-- RASM -->
+
+        <div class="photo-upload">
+
+            <div class="photo-preview">
+                <img id="photoPreview">
+
+                <span id="photoIcon">
+                    📷
+                </span>
+            </div>
+
+            <label for="photoInput" class="photo-btn">
+                📷 Rasm qo‘yish
+            </label>
+
+            <input
+                id="photoInput"
+                type="file"
+                accept="image/*"
+                hidden
+            >
+
+            <p id="photoName">
+                Rasm tanlanmagan
+            </p>
+
+        </div>
+
+
+        <!-- SHAXSIY MA'LUMOT -->
+
+        <div class="form-section">
+
+            <h3>👤 Shaxsiy ma'lumotlar</h3>
+
+            <div class="input-group">
+                <label>Ism</label>
+                <input
+                    id="firstName"
+                    type="text"
+                    placeholder="Masalan: Muhammad"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Familiya</label>
+                <input
+                    id="lastName"
+                    type="text"
+                    placeholder="Masalan: Azizov"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Otasining ismi</label>
+                <input
+                    id="fatherName"
+                    type="text"
+                    placeholder="Masalan: Akmalovich"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Tug‘ilgan sana</label>
+                <input
+                    id="birthDate"
+                    type="date"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Telefon</label>
+                <input
+                    id="phone"
+                    type="text"
+                    placeholder="+998 90 123 45 67"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="example@gmail.com"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Manzil</label>
+                <input
+                    id="address"
+                    type="text"
+                    placeholder="Toshkent shahri"
+                >
+            </div>
+
+        </div>
+
+
+        <!-- KASBIY MA'LUMOT -->
+
+        <div class="form-section">
+
+            <h3>💼 Kasbiy ma'lumotlar</h3>
+
+
+            <div class="input-group">
+                <label>Kasb / Lavozim</label>
+
+                <input
+                    id="job"
+                    type="text"
+                    placeholder="Masalan: Matematika o‘qituvchisi"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Ish tajribasi</label>
+
+                <input
+                    id="experience"
+                    type="text"
+                    placeholder="Masalan: 5 yil"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Maktab / Tashkilot</label>
+
+                <input
+                    id="company"
+                    type="text"
+                    placeholder="Masalan: 45-maktab"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Fan</label>
+
+                <input
+                    id="subject"
+                    type="text"
+                    placeholder="Masalan: Matematika"
+                >
+            </div>
+
+        </div>
+
+
+        <!-- TA'LIM -->
+
+        <div class="form-section">
+
+            <h3>🎓 Ta'lim</h3>
+
+            <div class="input-group">
+                <label>Universitet / Institut</label>
+
+                <input
+                    id="educationPlace"
+                    type="text"
+                    placeholder="Masalan: Toshkent davlat universiteti"
+                >
+            </div>
+
+
+            <div class="input-group">
+                <label>Yo‘nalish</label>
+
+                <input
+                    id="educationDirection"
+                    type="text"
+                    placeholder="Matematika va informatika"
+                >
+            </div>
+
+
+            <div class="input-row">
+
+                <div class="input-group">
+                    <label>Boshlanish</label>
+
+                    <input
+                        id="educationStart"
+                        type="text"
+                        placeholder="2018"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label>Tugash</label>
+
+                    <input
+                        id="educationEnd"
+                        type="text"
+                        placeholder="2022"
+                    >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MEN HAQIMDA -->
+
+        <div class="form-section">
+
+            <h3>📝 Men haqimda</h3>
+
+            <div class="input-group">
+
+                <textarea
+                    id="about"
+                    placeholder="O‘zingiz haqingizda qisqacha yozing..."
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- KO‘NIKMALAR -->
+
+        <div class="form-section">
+
+            <h3>⭐ Ko‘nikmalar</h3>
+
+            <div class="input-group">
+
+                <input
+                    id="skills"
+                    type="text"
+                    placeholder="Excel, Word, HTML, JavaScript"
+                >
+
+                <small>
+                    Ko‘nikmalarni vergul bilan ajrating
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- TILLAR -->
+
+        <div class="form-section">
+
+            <h3>🌐 Tillar</h3>
+
+            <div class="input-group">
+
+                <input
+                    id="languages"
+                    type="text"
+                    placeholder="O‘zbek tili, Ingliz tili, Rus tili"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button class="save-btn" onclick="saveResume()">
+            💾 Rezyumeni saqlash
+        </button>
+
+    </aside>
+
+
+    <!-- =========================
+         O‘NG TOMON — REZYUME
+    ========================== -->
+
+    <main class="resume-area">
+
+        <div class="resume-toolbar">
+
+            <div>
+                <h1>Rezyume</h1>
+                <p>Jonli ko‘rinish</p>
+            </div>
+
+            <button onclick="printResume()" class="print-btn">
+                🖨 Chop etish
+            </button>
+
+        </div>
+
+
+        <!-- REZYUME -->
+
+        <div class="cv" id="cv">
+
+            <!-- CV HEADER -->
+
+            <div class="cv-header">
+
+                <div class="cv-photo">
+
+                    <img id="cvPhoto">
+
+                    <span id="cvPhotoIcon">
+                        👨‍🏫
+                    </span>
+
+                </div>
+
+
+                <div class="cv-name">
+
+                    <h1 id="cvName">
+                        Ism Familiya
+                    </h1>
+
+                    <h2 id="cvJob">
+                        O‘qituvchi
+                    </h2>
+
+                    <p id="cvSubject">
+                        Fan kiritilmagan
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CV BODY -->
+
+            <div class="cv-body">
+
+                <!-- CHAP -->
+
+                <div class="cv-left">
+
+                    <section>
+
+                        <h3>ALOQA</h3>
+
+                        <div class="contact-item">
+                            📞
+                            <span id="cvPhone">Telefon</span>
+                        </div>
+
+                        <div class="contact-item">
+                            📧
+                            <span id="cvEmail">Email</span>
+                        </div>
+
+                        <div class="contact-item">
+                            📍
+                            <span id="cvAddress">Manzil</span>
+                        </div>
+
+                    </section>
+
+
+                    <section>
+
+                        <h3>SHAXSIY MA'LUMOT</h3>
+
+                        <div class="cv-info">
+                            <b>Tug‘ilgan sana</b>
+                            <span id="cvBirthDate">—</span>
+                        </div>
+
+                        <div class="cv-info">
+                            <b>Ish tajribasi</b>
+                            <span id="cvExperience">—</span>
+                        </div>
+
+                    </section>
+
+
+                    <section>
+
+                        <h3>KO‘NIKMALAR</h3>
+
+                        <div
+                            id="cvSkills"
+                            class="skills"
+                        >
+                            <span>Ko‘nikmalar</span>
+                        </div>
+
+                    </section>
+
+
+                    <section>
+
+                        <h3>TILLAR</h3>
+
+                        <div
+                            id="cvLanguages"
+                            class="language-list"
+                        >
+                            O‘zbek tili
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- O‘NG -->
+
+                <div class="cv-right">
+
+                    <section>
+
+                        <h3>MEN HAQIMDA</h3>
+
+                        <p id="cvAbout">
+                            O‘zingiz haqingizdagi ma'lumotlarni
+                            chap tomondagi formaga kiriting.
+                        </p>
+
+                    </section>
+
+
+                    <section>
+
+                        <h3>ISH TAJRIBASI</h3>
+
+                        <div class="timeline">
+
+                            <div class="timeline-item">
+
+                                <div class="timeline-dot"></div>
+
+                                <div>
+
+                                    <h4 id="cvCompany">
+                                        Maktab / Tashkilot
+                                    </h4>
+
+                                    <p id="cvExperience2">
+                                        Ish tajribasi
+                                    </p>
+
+                                    <p id="cvJobText">
+                                        O‘qituvchi
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <section>
+
+                        <h3>TA'LIM</h3>
+
+                        <div class="education">
+
+                            <h4 id="cvEducationPlace">
+                                Universitet / Institut
+                            </h4>
+
+                            <p id="cvEducationDirection">
+                                Yo‘nalish
+                            </p>
+
+                            <span id="cvEducationYears">
+                                2018 — 2022
+                            </span>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="./resume.js"></script>
+
+</body>
+</html>
+
+
+    <script src="./Rezyme.js"></script>
+</body>
+</html>

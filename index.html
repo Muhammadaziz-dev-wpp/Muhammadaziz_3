@@ -1,0 +1,1530 @@
+  <!DOCTYPE html>
+  <html lang="uz">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ustozim — Sinf boshqaruvi</title>
+
+    <!-- EXCEL -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+
+    <!-- OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+    <!-- ASOSIY CSS -->
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+      /* =========================
+        BAHOLASH TUGMASI
+      ========================= */
+
+      .grading-btn {
+        background: linear-gradient(135deg, #ffb300, #ff8f00);
+        color: white;
+        border: none;
+        box-shadow: 0 8px 20px rgba(255, 152, 0, .20);
+      }
+
+      .grading-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 152, 0, .30);
+      }
+
+      /* =========================
+        BALL USTUNI
+      ========================= */
+
+      .ball-cell {
+        text-align: center;
+        min-width: 90px;
+      }
+
+      .ball-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: 48px;
+        height: 36px;
+
+        padding: 0 10px;
+
+        border-radius: 12px;
+
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .ball-empty {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+
+      .ball-green {
+        background: #dcfce7;
+        color: #15803d;
+        border: 1px solid #86efac;
+      }
+
+      .ball-yellow {
+        background: #fef3c7;
+        color: #b45309;
+        border: 1px solid #fcd34d;
+      }
+
+      .ball-red {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 1px solid #fca5a5;
+      }
+
+      /* =========================
+        BAHOLASH MODALI
+      ========================= */
+
+      #gradingModal {
+        z-index: 9999;
+      }
+
+      .grading-box {
+        width: min(900px, 95vw);
+        max-height: 90vh;
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      .grading-list {
+        padding: 15px 5px;
+        overflow-y: auto;
+        max-height: 58vh;
+      }
+
+      .grading-row {
+        display: grid;
+        grid-template-columns: 55px 1fr 130px 120px;
+
+        align-items: center;
+        gap: 15px;
+
+        padding: 13px 15px;
+        margin-bottom: 8px;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+
+        background: #fff;
+
+        transition: .2s;
+      }
+
+      .grading-row:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(0,0,0,.06);
+      }
+
+      .grading-number {
+        font-weight: 800;
+        color: #64748b;
+        text-align: center;
+      }
+
+      .grading-student {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        font-weight: 700;
+      }
+
+      .grading-student-img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+
+        background: #eef2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      .grading-input {
+        width: 100%;
+        height: 44px;
+
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+
+        text-align: center;
+
+        font-size: 18px;
+        font-weight: 800;
+
+        outline: none;
+      }
+
+      .grading-input:focus {
+        border-color: #6366f1;
+      }
+
+      .grade-result {
+        text-align: center;
+        font-weight: 800;
+        padding: 8px;
+        border-radius: 9px;
+      }
+
+      .grade-result.green {
+        background: #dcfce7;
+        color: #15803d;
+      }
+
+      .grade-result.yellow {
+        background: #fef3c7;
+        color: #b45309;
+      }
+
+      .grade-result.red {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .grading-top-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 12px 16px;
+        margin-top: 12px;
+
+        border-radius: 14px;
+        background: #f8fafc;
+      }
+
+      .average-score {
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .average-score span {
+        color: #6366f1;
+      }
+
+      .grade-help {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        font-size: 13px;
+      }
+
+      .grade-help span {
+        padding: 5px 9px;
+        border-radius: 8px;
+        font-weight: 700;
+      }
+
+      .help-green {
+        background: #dcfce7;
+        color: #15803d;
+      }
+
+      .help-yellow {
+        background: #fef3c7;
+        color: #b45309;
+      }
+
+      .help-red {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      @media(max-width: 700px) {
+        .grading-row {
+          grid-template-columns: 35px 1fr;
+        }
+
+        .grading-input,
+        .grade-result {
+          grid-column: span 1;
+        }
+
+        .grade-help {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- =========================
+        PROFILE GATE
+    ========================= -->
+
+    <div class="profile-gate" id="profileGate">
+
+      <div class="profile-card">
+
+        <div class="profile-logo">
+          🎓 Ustozim
+        </div>
+
+        <div class="profile-sub">
+          Ustozimga xush kelibsiz! Avval o‘qituvchi ma’lumotlarini kiriting.
+        </div>
+<div class="profile-fields">
+  <div class="profile-field">
+    <label for="profileFirstName">Ismingiz</label>
+    <input id="profileFirstName" type="text" placeholder="Ismingiz" autocomplete="given-name">
+  </div>
+  <div class="profile-field">
+    <label for="profileLastName">Familyangiz</label>
+    <input id="profileLastName" type="text" placeholder="Familyangiz" autocomplete="family-name">
+  </div>
+</div>
+
+<div class="profile-field full-width">
+    <label for="profileClasses">Sinflaringiz</label>
+
+    <input
+        type="text"
+        id="profileClasses"
+        placeholder="Masalan: 10-V, 9-A, 8-B"
+        autocomplete="off"
+    >
+
+    <small class="profile-help">
+        Bir nechta sinf bo‘lsa, vergul bilan yozing.
+        Masalan: 10-V, 9-A, 8-B
+    </small>
+</div>
+
+        <div class="profile-photo">
+
+          <img
+            id="profilePreview"
+            class="profile-photo-preview"
+            alt="Profil rasmi"
+          >
+
+          <div
+            class="profile-photo-icon"
+            id="profilePhotoIcon"
+          >
+            📷
+          </div>
+
+          <b>Profil rasmini qo‘ying</b>
+
+          <div class="photo-description">
+            Rasm o‘qituvchi nomi yonida chiqadi
+          </div>
+
+          <label
+            class="file-label"
+            for="profilePhoto"
+          >
+            📷 Rasm tanlash
+          </label>
+
+          <input
+            id="profilePhoto"
+            type="file"
+            accept="image/*"
+            hidden
+          >
+
+          <div
+            class="file-name"
+            id="profilePhotoName"
+          >
+            Rasm tanlanmagan
+          </div>
+
+        </div>
+
+        <div
+          class="profile-error"
+          id="profileError"
+        >
+          Ism va familyangizni kiriting.
+        </div>
+
+        <button
+          class="profile-enter"
+          onclick="saveProfile()"
+        >
+          ✅ Kirish
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+        HEADER
+    ========================= -->
+
+    <header>
+
+      <div class="logo">
+
+        <span class="logo-icon">
+          🎓
+        </span>
+
+        <span>
+          Ustozim
+        </span>
+
+      </div>
+
+
+      <div class="header-right">
+
+        <a href="./Rezyme.html">
+          <button
+            class="resume-header-btn"
+            onclick="openResume()"
+          >
+            📄 Rezyume
+          </button>
+        </a>
+
+        <button
+          class="theme-btn"
+          id="themeBtn"
+          onclick="toggleTheme()"
+        >
+          🌙
+        </button>
+
+        <div
+          class="teacher"
+          id="teacherProfile"
+          onclick="openProfileEditor()"
+        >
+
+          🎓
+
+          <span>
+            O‘qituvchi:
+          </span>
+
+          <b id="teacherName">
+            O‘qituvchi
+          </b>
+
+          <span>
+            ▾
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =========================
+        MAIN
+    ========================= -->
+
+    <main>
+
+      <div class="top">
+
+        <div class="title-area">
+
+     <div class="class-select-box">
+
+    <h1 id="classTitle">7-A sinf</h1>
+
+    <div class="class-dropdown" id="classDropdown">
+
+        <button
+            type="button"
+            class="class-dropdown-btn"
+            onclick="toggleClassDropdown()"
+        >
+            <span id="selectedClass">7-A</span>
+
+            <span class="class-arrow">
+                ▾
+            </span>
+        </button>
+
+        <div
+            class="class-dropdown-menu"
+            id="classDropdownMenu"
+        ></div>
+
+    </div>
+
+</div>
+          <div class="muted subtitle">
+            O‘quvchilar ma’lumotlari va davomat
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+            ACTION BUTTONS
+        ========================= -->
+
+        <div class="actions">
+
+          <button
+            class="action-btn blue-btn"
+            onclick="document.getElementById('excelFile').click()"
+          >
+            📤 Excel yuklash
+          </button>
+
+          <input
+            id="excelFile"
+            type="file"
+            accept=".xlsx,.xls,.csv"
+            hidden
+            onchange="importExcel(event)"
+          >
+
+
+          <button
+            class="action-btn purple-btn"
+            onclick="document.getElementById('listImage').click()"
+          >
+            📷 Rasm orqali qo‘shish
+          </button>
+
+          <input
+            id="listImage"
+            type="file"
+            accept="image/*"
+            hidden
+            onchange="importListImage(event)"
+          >
+
+
+          <button
+            class="action-btn green-btn"
+            onclick="exportExcel()"
+          >
+            📥 Excelga chiqarish
+          </button>
+
+
+          <!-- ⭐ YANGI BAHOLASH -->
+
+          <button
+            class="action-btn grading-btn"
+            onclick="openGradingModal()"
+          >
+            ⭐ Baholash
+          </button>
+
+
+          <button
+            class="action-btn add-btn"
+            onclick="openModal()"
+          >
+            ＋ O‘quvchi qo‘shish
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+          STATS
+      ========================= -->
+
+      <div class="stats">
+
+        <div class="card stat-card card-blue">
+
+          <div class="stat-icon">
+            👥
+          </div>
+
+          <div>
+            <div class="muted">
+              Jami o‘quvchi
+            </div>
+
+            <div
+              class="num"
+              id="total"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="card stat-card card-green">
+
+          <div class="stat-icon">
+            📅
+          </div>
+
+          <div>
+            <div class="muted">
+              Bugun kelgan
+            </div>
+
+            <div
+              class="num"
+              id="present"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="card stat-card card-red">
+
+          <div class="stat-icon">
+            🚫
+          </div>
+
+          <div>
+            <div class="muted">
+              Kelmagan
+            </div>
+
+            <div
+              class="num"
+              id="absent"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="card stat-card card-orange">
+
+          <div class="stat-icon">
+            ⏰
+          </div>
+
+          <div>
+            <div class="muted">
+              Kechikib kelgan
+            </div>
+
+            <div
+              class="num"
+              id="lateTotal"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+          STUDENTS TABLE
+      ========================= -->
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              👨‍🎓 O‘quvchilar
+            </h2>
+
+            <div class="muted">
+              Tanlangan sinf o‘quvchilari
+            </div>
+
+          </div>
+
+          <div
+            class="panel-class"
+            id="panelClass"
+          >
+            7-A
+          </div>
+
+        </div>
+
+
+        <div class="controls">
+
+          <div class="search-wrap">
+
+            <span class="search-icon">
+              🔎
+            </span>
+
+            <input
+              id="search"
+              class="search"
+              type="text"
+              placeholder="Ism, familiya yoki telefon bo‘yicha qidirish..."
+              oninput="render()"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>№</th>
+
+                <th>Rasm</th>
+
+                <th>F.I.Sh.</th>
+
+                <th>Tug‘ilgan yil</th>
+
+                <th>Yashash manzili</th>
+
+                <th>Ota-ona telefoni</th>
+
+                <th>Davomat</th>
+                <th>Kechikish</th>
+                <th>Ball</th>
+
+                <th>Amallar</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="students"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =========================
+        ADD STUDENT MODAL
+    ========================= -->
+
+    <div
+      class="modal"
+      id="modal"
+    >
+
+      <div class="modal-box">
+
+        <div class="modal-title">
+
+          <div>
+
+            <h2>
+              👨‍🎓 O‘quvchilarni qo‘shish
+            </h2>
+
+            <div class="muted">
+
+              <span id="modalClassName">
+                7-A
+              </span>
+
+              sinfiga o‘quvchi qo‘shish
+
+            </div>
+
+          </div>
+
+          <button
+            class="close-btn"
+            onclick="closeModal()"
+          >
+            ✕
+          </button>
+
+        </div>
+
+
+        <div class="add-tabs">
+
+          <button
+            id="bulkTab"
+            class="add-tab active"
+            onclick="showAddMode('bulk')"
+          >
+            👥 Ko‘p o‘quvchi
+          </button>
+
+          <button
+            id="singleTab"
+            class="add-tab"
+            onclick="showAddMode('single')"
+          >
+            👤 Bitta o‘quvchi
+          </button>
+
+        </div>
+
+
+        <div id="bulkMode">
+
+          <div class="info-box">
+
+            <span>
+              💡
+            </span>
+
+            <span>
+              Excel yoki Word'dan
+              <b>copy → paste</b>
+              qiling.
+              40 tagacha o‘quvchini bir vaqtda qo‘shish mumkin.
+            </span>
+
+          </div>
+
+
+          <textarea
+            id="bulk"
+            class="bulk"
+            placeholder="Masalan:
+  Karimov Ali Akmalovich
+  Rahimova Madina Baxtiyorovna
+  Saidov Javohir Rustamovich
+  ...
+  40 tagacha o‘quvchi"
+          ></textarea>
+
+
+          <div class="bulk-footer">
+
+            <span
+              id="countText"
+              class="count"
+            >
+              0 / 40 ta o‘quvchi
+            </span>
+
+            <button
+              class="small-btn"
+              onclick="document.getElementById('bulk').value='';updateCount()"
+            >
+              🧹 Tozalash
+            </button>
+
+          </div>
+
+
+          <div class="upload-block">
+
+            <b>
+              📷 Bitta o‘quvchi uchun rasm
+            </b>
+
+            <label
+              class="file-label"
+              for="photo"
+            >
+              📷 Rasm tanlash
+            </label>
+
+            <input
+              id="photo"
+              type="file"
+              accept="image/*"
+              hidden
+            >
+
+            <div
+              class="file-name"
+              id="photoName"
+            >
+              Rasm tanlanmagan
+            </div>
+
+            <div class="notice">
+              Rasmni keyin ham jadvaldagi
+              “📷 Rasm”
+              tugmasi orqali qo‘shish mumkin.
+            </div>
+
+          </div>
+
+
+          <div class="modal-actions">
+
+            <button
+              class="secondary-btn"
+              onclick="closeModal()"
+            >
+              Bekor qilish
+            </button>
+
+            <button
+              class="primary-btn"
+              onclick="addStudent()"
+            >
+              ✅ O‘quvchilarni qo‘shish
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- SINGLE -->
+
+        <div
+          id="singleMode"
+          style="display:none"
+        >
+
+          <div class="single-fields">
+
+            <div class="single-field">
+              <label>Familiya</label>
+
+              <input
+                id="singleSurname"
+                type="text"
+                placeholder="Masalan: Karimov"
+              >
+            </div>
+
+
+            <div class="single-field">
+              <label>Ism</label>
+
+              <input
+                id="singleName"
+                type="text"
+                placeholder="Masalan: Ali"
+              >
+            </div>
+
+
+            <div class="single-field">
+              <label>Otasining ismi</label>
+
+              <input
+                id="singleFather"
+                type="text"
+                placeholder="Masalan: Akmalovich"
+              >
+            </div>
+
+
+            <div class="single-field">
+              <label>Tug‘ilgan yil</label>
+
+              <input
+                id="singleYear"
+                type="text"
+                inputmode="numeric"
+                placeholder="Masalan: 2012"
+              >
+            </div>
+
+
+            <div class="single-field full">
+
+              <label>
+                Yashash manzili
+              </label>
+
+              <input
+                id="singleAddress"
+                type="text"
+                placeholder="Masalan: Toshkent shahri"
+              >
+
+            </div>
+
+
+            <div class="single-field full">
+
+              <label>
+                Ota-ona telefoni
+              </label>
+
+              <input
+                id="singlePhone"
+                type="text"
+                inputmode="tel"
+                placeholder="+998 90 123 45 67"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="profile-photo single-photo">
+
+            <img
+              id="singlePreview"
+              class="profile-photo-preview"
+              alt="O‘quvchi rasmi"
+            >
+
+            <div
+              id="singlePhotoIcon"
+              class="profile-photo-icon"
+            >
+              📷
+            </div>
+
+            <b>
+              O‘quvchi rasmini qo‘ying
+            </b>
+
+            <label
+              class="file-label"
+              for="singlePhoto"
+            >
+              📷 Rasm tanlash
+            </label>
+
+            <input
+              id="singlePhoto"
+              type="file"
+              accept="image/*"
+              hidden
+            >
+
+            <div
+              id="singlePhotoName"
+              class="file-name"
+            >
+              Rasm tanlanmagan
+            </div>
+
+          </div>
+
+
+          <div class="modal-actions">
+
+            <button
+              class="secondary-btn"
+              onclick="closeModal()"
+            >
+              Bekor qilish
+            </button>
+
+            <button
+              class="primary-btn"
+              onclick="addSingleStudent()"
+            >
+              ✅ O‘quvchini qo‘shish
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+        OCR
+    ========================= -->
+
+    <div
+      class="ocr-box"
+      id="ocrBox"
+    >
+
+      <div class="ocr-icon">
+        📷
+      </div>
+
+      <div class="ocr-content">
+
+        <b id="ocrText">
+          Rasm o‘qilmoqda... 0%
+        </b>
+
+        <div class="progress">
+
+          <div
+            class="bar"
+            id="ocrBar"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+        PROFILE EDITOR
+    ========================= -->
+
+    <div
+      class="modal"
+      id="profileEditor"
+    >
+
+      <div class="modal-box profile-editor-box">
+
+        <div class="modal-title">
+
+          <div>
+
+            <h2>
+              👨‍🏫 O‘qituvchi profili
+            </h2>
+
+            <div class="muted">
+              Profil ma’lumotlarini o‘zgartirish
+            </div>
+
+          </div>
+
+          <button
+            class="close-btn"
+            onclick="closeProfileEditor()"
+          >
+            ✕
+          </button>
+
+        </div>
+
+
+        <div class="profile-fields">
+
+          <div class="profile-field">
+
+            <label>
+              Ismingiz
+            </label>
+
+            <input
+              id="editFirstName"
+              type="text"
+              placeholder="Ismingiz"
+            >
+
+          </div>
+
+
+          <div class="profile-field">
+
+            <label>
+              Familyangiz
+            </label>
+
+            <input
+              id="editLastName"
+              type="text"
+              placeholder="Familyangiz"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="profile-field full-width">
+          <label for="editClasses">Sinflaringiz</label>
+          <input
+            id="editClasses"
+            type="text"
+            placeholder="Masalan: 10-V, 9-A, 8-B"
+            autocomplete="off"
+          >
+          <small class="profile-help">
+            Bir nechta sinf bo‘lsa, vergul bilan yozing.
+          </small>
+        </div>
+
+
+        <div class="profile-photo">
+
+          <img
+            id="editPreview"
+            class="profile-photo-preview"
+            alt="Profil rasmi"
+          >
+
+          <div class="profile-photo-icon">
+            📷
+          </div>
+
+          <label
+            class="file-label"
+            for="editPhoto"
+          >
+            📷 Yangi rasm tanlash
+          </label>
+
+          <input
+            id="editPhoto"
+            type="file"
+            accept="image/*"
+            hidden
+          >
+
+          <div
+            id="editPhotoName"
+            class="file-name"
+          >
+            Rasm tanlanmagan
+          </div>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            class="secondary-btn"
+            onclick="closeProfileEditor()"
+          >
+            Bekor qilish
+          </button>
+
+          <button
+            class="primary-btn"
+            onclick="updateProfile()"
+          >
+            💾 Saqlash
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+        REZYUME MODAL
+    ========================= -->
+
+    <div
+      class="modal"
+      id="resumeModal"
+    >
+
+      <div class="modal-box resume-box">
+
+        <div class="modal-title">
+
+          <div>
+
+            <h2>
+              📄 O‘qituvchi rezyumesi
+            </h2>
+
+            <div class="muted">
+              O‘qituvchi haqida ma’lumot
+            </div>
+
+          </div>
+
+          <button
+            class="close-btn"
+            onclick="closeResume()"
+          >
+            ✕
+          </button>
+
+        </div>
+
+
+        <div class="resume-profile">
+
+          <div class="resume-photo">
+
+            <img
+              id="resumePhoto"
+              alt="O‘qituvchi rasmi"
+            >
+
+            <div id="resumePhotoIcon">
+              👨‍🏫
+            </div>
+
+          </div>
+
+
+          <div class="resume-name">
+
+            <h2 id="resumeName">
+              O‘qituvchi
+            </h2>
+
+            <div class="resume-job">
+              👨‍🏫 O‘qituvchi
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="resume-info">
+
+          <div class="resume-item">
+
+            <span class="resume-item-icon">
+              👤
+            </span>
+
+            <div>
+
+              <small>
+                Ism
+              </small>
+
+              <b id="resumeFirstName">
+                —
+              </b>
+
+            </div>
+
+          </div>
+
+
+          <div class="resume-item">
+
+            <span class="resume-item-icon">
+              👨‍👩‍👦
+            </span>
+
+            <div>
+
+              <small>
+                Familiya
+              </small>
+
+              <b id="resumeLastName">
+                —
+              </b>
+
+            </div>
+
+          </div>
+
+
+          <div class="resume-item">
+
+            <span class="resume-item-icon">
+              🏫
+            </span>
+
+            <div>
+
+              <small>
+                Lavozim
+              </small>
+
+              <b>
+                O‘qituvchi
+              </b>
+
+            </div>
+
+          </div>
+
+
+          <div class="resume-item">
+
+            <span class="resume-item-icon">
+              📚
+            </span>
+
+            <div>
+
+              <small>
+                Sinf
+              </small>
+
+              <b id="resumeClass">
+                7-A
+              </b>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="resume-about">
+
+          <h3>
+            📝 Men haqimda
+          </h3>
+
+          <p>
+            O‘quvchilarga zamonaviy va samarali usullar
+            orqali bilim berishga intiluvchi o‘qituvchi.
+          </p>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            class="secondary-btn"
+            onclick="closeResume()"
+          >
+            Yopish
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+        ⭐⭐ BAHOLASH MODALI ⭐⭐
+    ====================================================== -->
+
+    <div
+      class="modal"
+      id="gradingModal"
+    >
+
+      <div class="modal-box grading-box">
+
+        <div class="modal-title">
+
+          <div>
+
+            <h2>
+              ⭐ O‘quvchilarni baholash
+            </h2>
+
+            <div class="muted">
+              Har bir o‘quvchiga 0 dan 10 gacha ball bering
+            </div>
+
+          </div>
+
+          <button
+            class="close-btn"
+            onclick="closeGradingModal()"
+          >
+            ✕
+          </button>
+
+        </div>
+
+
+        <!-- BAHO QOIDASI -->
+
+        <div class="grading-top-info">
+
+          <div class="grade-help">
+
+            <span class="help-green">
+              🟢 9–10 — A’lo
+            </span>
+
+            <span class="help-yellow">
+              🟡 7–8 — Yaxshi
+            </span>
+
+            <span class="help-red">
+              🔴 0–6 — Qoniqarsiz
+            </span>
+
+          </div>
+
+
+          <div class="average-score">
+            O‘rtacha:
+            <span id="averageScore">
+              0.0
+            </span>
+          </div>
+
+        </div>
+
+
+        <!-- O‘QUVCHILAR -->
+
+        <div
+          class="grading-list"
+          id="gradingList"
+        >
+
+          <!-- JS avtomatik chiqaradi -->
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="modal-actions">
+
+          <button
+            class="secondary-btn"
+            onclick="closeGradingModal()"
+          >
+            Bekor qilish
+          </button>
+
+          <button
+            class="primary-btn"
+            onclick="saveAllGrades()"
+          >
+            💾 Baholarni saqlash
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ASOSIY JS -->
+
+    <script src="./script.js"></script>
+
+
+    <!-- =====================================================
+        ⭐ BAHOLASH JAVASCRIPT
+    ====================================================== -->
+</body>
+  </html>

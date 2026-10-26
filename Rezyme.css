@@ -1,0 +1,896 @@
+
+/* REZYUME BUTTON */
+
+.resume-header-btn{
+  border:none;
+  background:#eef2ff;
+  color:#315bea;
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.resume-header-btn:hover{
+  transform:translateY(-2px);
+  background:#dbe7ff;
+}
+
+
+/* REZYUME */
+
+.resume-box{
+  max-width:760px;
+  width:95%;
+}
+
+.resume-head{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:20px;
+  border-radius:18px;
+  background:#f5f7ff;
+}
+
+.resume-avatar{
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#dbe7ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:45px;
+  flex-shrink:0;
+}
+
+.resume-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.resume-avatar img.active{
+  display:block;
+}
+
+.resume-head h1{
+  margin:0;
+  font-size:28px;
+}
+
+.resume-head p{
+  margin:6px 0;
+  color:#64748b;
+}
+
+.resume-badge{
+  background:#315bea;
+  color:white;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.resume-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:20px;
+}
+
+.resume-field{
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:14px;
+  background:white;
+}
+
+.resume-field label{
+  display:block;
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:6px;
+}
+
+.resume-field div{
+  font-weight:700;
+  color:#1f2937;
+}
+
+.resume-section{
+  margin-top:18px;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:16px;
+}
+
+.resume-section h3{
+  margin:0 0 10px;
+}
+
+.resume-section p{
+  color:#475569;
+  line-height:1.6;
+}
+
+.skills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.skill{
+  background:#e8f0ff;
+  color:#315bea;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+
+/* EDITOR */
+
+.resume-editor-box{
+  max-width:700px;
+  width:95%;
+}
+
+.resume-form{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.resume-form textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+@media(max-width:650px){
+
+  .resume-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-row{
+    grid-template-columns:1fr;
+  }
+
+  .resume-head{
+    flex-direction:column;
+    text-align:center;
+  }
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6fb;
+    color: #1f2937;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.resume-page {
+    min-height: 100vh;
+
+    display: flex;
+}
+
+
+/* =========================
+   LEFT SIDEBAR
+========================= */
+
+.resume-sidebar {
+    width: 390px;
+    min-height: 100vh;
+
+    background: white;
+
+    padding: 25px;
+
+    border-right: 1px solid #e5e7eb;
+
+    overflow-y: auto;
+}
+
+
+.sidebar-title {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 25px;
+}
+
+
+.sidebar-title h2 {
+    font-size: 24px;
+}
+
+
+.sidebar-title p {
+    margin-top: 4px;
+
+    color: #8a94a6;
+
+    font-size: 13px;
+}
+
+
+.back-btn {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #eef2ff;
+
+    color: #315bea;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   PHOTO
+========================= */
+
+.photo-upload {
+    text-align: center;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background: #f7f9ff;
+
+    margin-bottom: 20px;
+}
+
+
+.photo-preview {
+    width: 110px;
+    height: 110px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #e9efff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border: 4px solid white;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: none;
+}
+
+
+.photo-preview img.active {
+    display: block;
+}
+
+
+#photoIcon {
+    font-size: 42px;
+}
+
+
+.photo-btn {
+    display: inline-block;
+
+    margin-top: 15px;
+
+    padding: 10px 16px;
+
+    border-radius: 10px;
+
+    background: #315bea;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.photo-upload p {
+    margin-top: 8px;
+
+    color: #8a94a6;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-section {
+    padding: 20px 0;
+
+    border-bottom: 1px solid #edf0f5;
+}
+
+
+.form-section h3 {
+    margin-bottom: 16px;
+
+    font-size: 16px;
+}
+
+
+.input-group {
+    margin-bottom: 13px;
+}
+
+
+.input-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #4b5563;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+
+    padding: 12px 13px;
+
+    border: 1px solid #dfe4ec;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: .2s;
+
+    background: white;
+}
+
+
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: #315bea;
+
+    box-shadow: 0 0 0 3px rgba(49,91,234,.08);
+}
+
+
+.input-group textarea {
+    min-height: 110px;
+
+    resize: vertical;
+}
+
+
+.input-group small {
+    color: #929bab;
+
+    font-size: 11px;
+}
+
+
+.input-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+
+/* SAVE */
+
+.save-btn {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #315bea;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.save-btn:hover {
+    background: #244bd0;
+}
+
+
+/* =========================
+   RIGHT
+========================= */
+
+.resume-area {
+    flex: 1;
+
+    padding: 35px;
+
+    overflow: auto;
+}
+
+
+.resume-toolbar {
+    max-width: 950px;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.resume-toolbar h1 {
+    font-size: 25px;
+}
+
+
+.resume-toolbar p {
+    color: #8a94a6;
+
+    font-size: 13px;
+
+    margin-top: 4px;
+}
+
+
+.print-btn {
+    padding: 11px 17px;
+
+    border: 1px solid #dfe4ec;
+
+    background: white;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   CV
+========================= */
+
+.cv {
+    max-width: 950px;
+
+    min-height: 1100px;
+
+    margin: auto;
+
+    background: white;
+
+    box-shadow: 0 10px 40px rgba(30,40,70,.12);
+}
+
+
+/* CV HEADER */
+
+.cv-header {
+    min-height: 230px;
+
+    padding: 45px;
+
+    background: #315bea;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+
+.cv-photo {
+    width: 145px;
+    height: 145px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.2);
+
+    border: 5px solid white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+}
+
+
+.cv-photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: none;
+}
+
+
+.cv-photo img.active {
+    display: block;
+}
+
+
+#cvPhotoIcon {
+    font-size: 55px;
+}
+
+
+.cv-name h1 {
+    font-size: 38px;
+
+    margin-bottom: 8px;
+}
+
+
+.cv-name h2 {
+    font-size: 21px;
+
+    font-weight: 500;
+
+    opacity: .95;
+}
+
+
+.cv-name p {
+    margin-top: 8px;
+
+    opacity: .8;
+}
+
+
+/* BODY */
+
+.cv-body {
+    display: grid;
+
+    grid-template-columns: 280px 1fr;
+}
+
+
+/* LEFT */
+
+.cv-left {
+    padding: 35px;
+
+    background: #f7f9ff;
+}
+
+
+.cv-right {
+    padding: 35px 40px;
+}
+
+
+.cv-body section {
+    margin-bottom: 35px;
+}
+
+
+.cv-body section h3 {
+    font-size: 13px;
+
+    letter-spacing: 1.5px;
+
+    color: #315bea;
+
+    border-bottom: 2px solid #315bea;
+
+    padding-bottom: 8px;
+
+    margin-bottom: 17px;
+}
+
+
+.contact-item {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+
+    word-break: break-word;
+}
+
+
+.cv-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    margin-bottom: 13px;
+
+    font-size: 13px;
+}
+
+
+.cv-info span {
+    color: #667085;
+}
+
+
+/* SKILLS */
+
+.skills {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+
+.skill {
+    padding: 6px 9px;
+
+    background: #e6edff;
+
+    color: #315bea;
+
+    border-radius: 15px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+.language-list {
+    color: #475467;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+/* RIGHT */
+
+.cv-right section h3 {
+    font-size: 14px;
+}
+
+
+.cv-right p {
+    color: #596579;
+
+    line-height: 1.7;
+
+    font-size: 14px;
+}
+
+
+/* TIMELINE */
+
+.timeline-item {
+    position: relative;
+
+    padding-left: 25px;
+}
+
+
+.timeline-dot {
+    position: absolute;
+
+    left: 0;
+    top: 5px;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #315bea;
+}
+
+
+.timeline-item h4 {
+    font-size: 17px;
+
+    margin-bottom: 5px;
+}
+
+
+.timeline-item p {
+    margin-bottom: 4px;
+}
+
+
+.education h4 {
+    font-size: 17px;
+
+    margin-bottom: 5px;
+}
+
+
+.education span {
+    display: inline-block;
+
+    margin-top: 8px;
+
+    padding: 5px 10px;
+
+    background: #eef2ff;
+
+    color: #315bea;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px) {
+
+    .resume-page {
+        flex-direction: column;
+    }
+
+    .resume-sidebar {
+        width: 100%;
+
+        min-height: auto;
+
+        border-right: none;
+
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+}
+
+
+@media(max-width:650px) {
+
+    .resume-area {
+        padding: 15px;
+    }
+
+    .cv-header {
+        padding: 25px;
+
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .cv-name h1 {
+        font-size: 28px;
+    }
+
+    .cv-body {
+        grid-template-columns: 1fr;
+    }
+
+    .cv-left,
+    .cv-right {
+        padding: 25px;
+    }
+
+    .resume-toolbar {
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+}
+
+
+/* =========================
+   PRINT
+========================= */
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    .resume-sidebar,
+    .resume-toolbar {
+        display: none;
+    }
+
+    .resume-page {
+        display: block;
+    }
+
+    .resume-area {
+        padding: 0;
+    }
+
+    .cv {
+        box-shadow: none;
+
+        max-width: none;
+    }
+
+}
